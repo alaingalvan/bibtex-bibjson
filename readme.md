@@ -17,8 +17,8 @@ A tool to convert BibTeX citations to [BibJSON](http://okfnlabs.org/bibjson/).
 Check out our [Demo](https://codepen.io/alaingalvan/pen/agjaLo) to try it out for yourself!
 
 ```ts
-import {openFileSync} from 'fs';
-import {parse} from 'bibtex-bibjson';
+import { openFileSync } from 'fs';
+import { parse } from 'bibtex-bibjson';
 
 // Read file as string
 let bibTexStr = openFileSync('./citations.bib');
@@ -43,18 +43,18 @@ Becomes:
 
 ```json
 {
-    "hasselgren2020": {
-        "author": [
-            { "name": "Jon Hasselgren" },
-            { "name": "J. Munkberg" },
-            { "name": "Marco Salvi" },
-            { "name": "A. Patney" },
-            { "name": "Aaron Lefohn" }
-        ],
-        "year": 2020,
-        "title": "Neural Temporal Adaptive Sampling and Denoising",
-        "journal": "Computer Graphics Forum",
-    }
+  "hasselgren2020": {
+    "author": [
+      { "name": "Jon Hasselgren" },
+      { "name": "J. Munkberg" },
+      { "name": "Marco Salvi" },
+      { "name": "A. Patney" },
+      { "name": "Aaron Lefohn" }
+    ],
+    "year": 2020,
+    "title": "Neural Temporal Adaptive Sampling and Denoising",
+    "journal": "Computer Graphics Forum"
+  }
 }
 ```
 
@@ -71,5 +71,3 @@ bibtex-bibjson is licensed as either **MIT** or **Apache-2.0**, whichever you wo
 [npm-img]: https://img.shields.io/npm/v/bibtex-bibjson.svg?style=flat-square
 [npm-url]: http://npm.im/bibtex-bibjson
 [npm-download-img]: https://img.shields.io/npm/dm/bibtex-bibjson.svg?style=flat-square
-[codecov-img]: https://img.shields.io/codecov/c/github/plus1tv/bibtex-bibjson.svg?style=flat-square
-[codecov-url]: https://codecov.io/gh/plus1tv/bibtex-bibjson
