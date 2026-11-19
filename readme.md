@@ -69,6 +69,5 @@ bibtex-bibjson is licensed as either **MIT** or **Apache-2.0**, whichever you wo
 [npm-img]: https://img.shields.io/npm/v/bibtex-bibjson.svg?style=flat-square
 [npm-url]: http://npm.im/bibtex-bibjson
 
-[npm-download-img]: https://img.shields.io/npm/dm/bibtex-bibjson.svg?style=flat-square
-[actions-img]: https://img.shields.io/github/actions/workflow/status/plus1tv/bibtex-bibjson/ci.yml?style=flat-square
+[actions-img]: https://img.shields.io/github/actions/workflow/status/plus1tv/bibtex-bibjson/test.yml?style=flat-square
 [actions-url]: https://github.com/plus1tv/bibtex-bibjson/actions/
