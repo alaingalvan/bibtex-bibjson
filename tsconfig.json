@@ -14,10 +14,11 @@
         "es5",
         "dom"
       ],
-      "module": "commonjs",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "types": ["node"],
       "declaration": true,
       "noImplicitAny": false,
-      "suppressImplicitAnyIndexErrors": true,
       "removeComments": false,
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
