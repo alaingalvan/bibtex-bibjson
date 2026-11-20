@@ -8,15 +8,18 @@
   "main": "dist/bibtex-bibjson.js",
   "module": "dist/bibtex-bibjson.module.js",
   "unpkg": "dist/bibtex-bibjson.umd.js",
-  "exports": "./dist/bibtex-bibjson.modern.js",
+  "exports": {
+    "types": "./dist/bibtex-bibjson.d.ts",
+    "default": "./dist/bibtex-bibjson.modern.js"
+  },
   "scripts": {
-    "build": "peggy -o src/bibtex-bibjson.js src/bibtex.pegjs && node scripts/build.mjs && tsc --ignoreConfig --allowJs --declaration --emitDeclarationOnly --outDir dist src/bibtex-bibjson.js",
+    "build": "peggy -o src/bibtex-bibjson.js src/bibtex.pegjs && tsc --ignoreConfig --allowJs --declaration --emitDeclarationOnly --outDir dist src/bibtex-bibjson.js && node scripts/build.mjs",
     "test": "ava tests/test.ts",
     "start": "npm run build"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/plus1tv/bibtex-bibjson.git"
+    "url": "git+https://github.com/alaingalvan/bibtex-bibjson.git"
   },
   "keywords": [
     "transpiler",
@@ -27,15 +30,15 @@
   "author": "Alain Galvan",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/plus1tv/bibtex-bibjson/issues"
+    "url": "https://github.com/alaingalvan/bibtex-bibjson/issues"
   },
-  "homepage": "https://github.com/plus1tv/bibtex-bibjson#readme",
+  "homepage": "https://github.com/alaingalvan/bibtex-bibjson#readme",
   "ava": {
     "extensions": [
       "ts"
     ],
     "require": [
-      "ts-node/register/transpile-only"
+      "tsx/cjs"
     ]
   },
   "devDependencies": {
@@ -43,7 +46,7 @@
     "ava": "^8.4.x",
     "esbuild": "^0.28.2",
     "peggy": "^5.1.1",
-    "ts-node": "^10.9.2",
-    "typescript": "^6.0.3"
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
   }
 }

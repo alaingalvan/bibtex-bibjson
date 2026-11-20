@@ -45,7 +45,9 @@
       .replace(/\\([&%$#_])/g, '$1')
       .replace(accentPattern, (m, mark, letter) => letter + ACCENT_MARKS[mark])
       .replace(/\\([cvuHkdrb])\{([A-Za-z])\}/g, (m, mark, letter) => letter + LETTER_ACCENT_MARKS[mark])
-      .replace(/\\(ss|ae|AE|oe|OE|o|O|l|L)(?![A-Za-z])(\{\})?/g, (m, name) => SPECIAL_LETTERS[name]);
+      .replace(/\\(ss|ae|AE|oe|OE|o|O|l|L)(?![A-Za-z])(\{\})?/g, (m, name) => SPECIAL_LETTERS[name])
+      .replace(/\\(textbackslash|textbraceleft|textbraceright)\{\}/g,
+        (m, name) => ({textbackslash: '\\', textbraceleft: '{', textbraceright: '}'}[name]));
   }
 
   function latexToUnicode(text) {

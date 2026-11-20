@@ -21,6 +21,7 @@ wasm-build
 dist
 *.map
 *.js
+!src/encode.js
 
 ## Visual Studio
 # User-specific files

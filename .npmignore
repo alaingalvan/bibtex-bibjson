@@ -1,4 +1,5 @@
 dist
+!dist/bibjson.d.ts
 
 *.hxl
 bin/*
