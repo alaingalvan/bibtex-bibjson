@@ -1,7 +1,11 @@
 {
   "name": "bibtex-bibjson",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "📚 A tool to convert BibTeX documents to and from BibJSON.",
+  "files": [
+    "dist/*.js",
+    "dist/*.d.ts"
+  ],
   "typings": "dist/bibtex-bibjson.d.ts",
   "types": "dist/bibtex-bibjson.d.ts",
   "source": "src/bibtex-bibjson.js",
