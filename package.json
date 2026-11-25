@@ -17,7 +17,7 @@
     "default": "./dist/bibtex-bibjson.modern.js"
   },
   "scripts": {
-    "build": "peggy -o src/bibtex-bibjson.js src/bibtex.pegjs && tsc --ignoreConfig --allowJs --declaration --emitDeclarationOnly --outDir dist src/bibtex-bibjson.js && node scripts/build.mjs",
+    "build": "peggy -o src/bibtex-bibjson.js src/bibtex.pegjs && tsc --ignoreConfig --allowJs --declaration --emitDeclarationOnly --outDir dist src/bibtex-bibjson.js && tsx scripts/build.mts",
     "test": "ava tests/test.ts",
     "start": "npm run build"
   },

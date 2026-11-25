@@ -1,12 +1,12 @@
-import { build } from 'esbuild';
+import { build, type BuildOptions } from 'esbuild';
 import { copyFile, appendFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 
-const shared = {
+const shared: BuildOptions = {
   stdin: {
-    contents: "export const { parse, SyntaxError } = require('./src/bibtex-bibjson.js'); export const { encode } = require('./src/encode.ts');",
+    contents: "import { parse, SyntaxError } from './src/bibtex-bibjson.js'; import { encode } from './src/encode.ts'; export { parse, SyntaxError, encode };",
     resolveDir: root,
     sourcefile: 'bibtex-bibjson.js',
     loader: 'js',
@@ -18,8 +18,12 @@ const shared = {
   target: 'es2015',
 };
 
+interface Output extends BuildOptions {
+  outfile: string;
+}
+
 // Output paths match the fields in package.json (main, module, exports, unpkg).
-const outputs = [
+const outputs: Output[] = [
   { outfile: 'dist/bibtex-bibjson.js', format: 'cjs' },
   { outfile: 'dist/bibtex-bibjson.module.js', format: 'esm' },
   { outfile: 'dist/bibtex-bibjson.modern.js', format: 'esm' },
