@@ -4,7 +4,7 @@ import { createRequire } from 'module';
 import test from 'ava';
 
 const { parse } = createRequire(import.meta.url)('../src/bibtex-bibjson.js');
-const { encode } = createRequire(import.meta.url)('../src/encode.js');
+const { encode } = createRequire(import.meta.url)('../src/encode.ts');
 
 // Snapshot of the parsed fixture. Refresh with: npm test -- --update-snapshots
 test('Test Example', (t) => {

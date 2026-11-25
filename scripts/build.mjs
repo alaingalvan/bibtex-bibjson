@@ -6,7 +6,7 @@ const root = fileURLToPath(new URL('..', import.meta.url));
 
 const shared = {
   stdin: {
-    contents: "export const { parse, SyntaxError } = require('./src/bibtex-bibjson.js'); export const { encode } = require('./src/encode.js');",
+    contents: "export const { parse, SyntaxError } = require('./src/bibtex-bibjson.js'); export const { encode } = require('./src/encode.ts');",
     resolveDir: root,
     sourcefile: 'bibtex-bibjson.js',
     loader: 'js',

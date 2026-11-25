@@ -1,10 +1,29 @@
+import type { BibJSON, BibJSONAuthor, BibJSONLink } from './bibjson';
+
 const citationKeyPattern = /^[\p{L}\p{Nl}\p{Nd}\p{Mn}\p{Pc}./()'":;\-]+$/u;
 const entryTypePattern = /^[\p{L}\p{Nl}\p{Nd}]+$/u;
 const fieldNamePattern = /^[A-Za-z_][A-Za-z0-9_:.\-]*$/;
 
-function braced(value, escapeSpecial = true) {
-  const open = [];
-  const unmatched = new Set();
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
+function isAuthor(value: unknown): value is BibJSONAuthor {
+  return isRecord(value) &&
+    typeof value.name === 'string' &&
+    value.name.length > 0 &&
+    Object.keys(value).every(key => key === 'name');
+}
+
+function isLink(value: unknown): value is BibJSONLink {
+  return isRecord(value) &&
+    typeof value.url === 'string' &&
+    Object.keys(value).every(key => key === 'url');
+}
+
+function braced(value: string, escapeSpecial = true): string {
+  const open: number[] = [];
+  const unmatched = new Set<number>();
   for (let i = 0; i < value.length; i++) {
     if (value[i] === '{') open.push(i);
     if (value[i] === '}') {
@@ -16,7 +35,7 @@ function braced(value, escapeSpecial = true) {
   if (!escapeSpecial && unmatched.size) throw new TypeError('Unbalanced braces in URL');
 
   const text = escapeSpecial
-    ? value.replace(/(\\*)([{}&%$#_])/g, (match, slashes, special, offset) => {
+    ? value.replace(/(\\*)([{}&%$#_])/g, (match, slashes: string, special: string, offset: number) => {
         if (special === '{' || special === '}') {
           if (!unmatched.has(offset + slashes.length)) return match;
           return '\\textbackslash{}'.repeat(slashes.length) +
@@ -28,9 +47,9 @@ function braced(value, escapeSpecial = true) {
   return `{${text}}`;
 }
 
-function encodeEntry(key, entry) {
+function encodeEntry(key: string, entry: unknown): string {
   if (!citationKeyPattern.test(key)) throw new TypeError(`Invalid citation key: ${key}`);
-  if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
+  if (!isRecord(entry)) {
     throw new TypeError(`Invalid entry: ${key}`);
   }
   const type = entry.bibtexType;
@@ -38,8 +57,8 @@ function encodeEntry(key, entry) {
     throw new TypeError(`Invalid BibTeX entry type for ${key}`);
   }
 
-  const fields = [];
-  const seen = new Set();
+  const fields: string[] = [];
+  const seen = new Set<string>();
   for (const [name, value] of Object.entries(entry)) {
     if (name === 'bibtexType') continue;
     const field = name === 'link' ? 'url' : name;
@@ -48,10 +67,9 @@ function encodeEntry(key, entry) {
     }
     seen.add(field.toLowerCase());
 
-    let encoded;
+    let encoded: string;
     if (name === 'author') {
-      if (!Array.isArray(value) || value.some(author =>
-        !author || typeof author.name !== 'string' || !author.name || Object.keys(author).some(k => k !== 'name'))) {
+      if (!Array.isArray(value) || !value.every(isAuthor)) {
         throw new TypeError(`Invalid authors in ${key}`);
       }
       encoded = `{${value.map(author => {
@@ -59,8 +77,7 @@ function encodeEntry(key, entry) {
         return /,|\s+and\s+/i.test(author.name) ? name : name.slice(1, -1);
       }).join(' and ')}}`;
     } else if (name === 'link') {
-      if (!Array.isArray(value) || value.length !== 1 || !value[0] ||
-          typeof value[0].url !== 'string' || Object.keys(value[0]).some(k => k !== 'url')) {
+      if (!Array.isArray(value) || value.length !== 1 || !isLink(value[0])) {
         throw new TypeError(`Expected exactly one URL in ${key}`);
       }
       encoded = braced(value[0].url, false);
@@ -74,16 +91,11 @@ function encodeEntry(key, entry) {
   return `@${type}{${key},${fields.length ? '\n' + fields.join(',\n') + '\n' : '\n'}}`;
 }
 
-/**
- * Convert the citation-keyed BibJSON produced by parse into BibTeX.
- * @param {import('./bibjson').BibJSON} json
- * @returns {string}
- */
-function encode(json) {
-  if (!json || typeof json !== 'object' || Array.isArray(json)) {
+/** Convert the citation-keyed BibJSON produced by parse into BibTeX. */
+export function encode(json: BibJSON): string {
+  if (!isRecord(json)) {
     throw new TypeError('Expected a citation-keyed BibJSON object');
   }
   return Object.entries(json).map(([key, entry]) => encodeEntry(key, entry)).join('\n\n');
 }
 
-module.exports = { encode };
